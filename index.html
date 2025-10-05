@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Sign-Up Form</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the form */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for validation messages to ensure consistent height */
+        .validation-message {
+            height: 1.25rem; /* Equivalent to h-5 in Tailwind */
+        }
+        /* Simple transition for better UX on input focus and validation changes */
+        input {
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .validation-item svg {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        /* Updated validation colors for better contrast on the glassmorphic background */
+        .valid {
+            color: #6EE7B7; /* A bright, vibrant green (emerald-300) */
+        }
+        .invalid {
+            color: #FCD34D; /* A bright, vibrant yellow (amber-300) */
+        }
+        /* Text shadow utility to lift text off the background */
+        .text-shadow {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md p-8 space-y-6 bg-white/5 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-lg">
+        <h1 class="text-3xl font-bold text-center text-white">Create Account</h1>
+
+        <!-- Accessible error message region -->
+        <div id="form-error" role="alert" aria-live="polite" class="text-yellow-300 font-medium text-sm"></div>
+        <div id="form-success" role="alert" aria-live="polite" class="text-green-300 font-medium text-sm text-center"></div>
+
+        <!-- The novalidate attribute prevents the browser's default validation UI -->
+        <form id="signup-form" class="space-y-6" novalidate>
+            <!-- Email Field -->
+            <div>
+                <label for="email" class="text-sm font-medium text-gray-200 block mb-2">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent focus:outline-none shadow-inner bg-white/10 text-white placeholder-gray-400" required placeholder="you@example.com" aria-describedby="email-error">
+                <p id="email-error" class="text-yellow-300 text-xs mt-1 validation-message"></p>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+                <label for="password" class="text-sm font-medium text-gray-200 block mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent focus:outline-none shadow-inner bg-white/10 text-white placeholder-gray-400" required placeholder="••••••••" aria-describedby="password-rules">
+                    <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400" aria-label="Show password">
+                        <!-- Eye Icon SVG -->
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                        </svg>
+                         <!-- Eye Slash Icon SVG -->
+                        <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2 2 0 012.828 2.828l1.515 1.515A4 4 0 0014 10a4 4 0 10-5.464-5.464z" clip-rule="evenodd" />
+                            <path d="M12.982 14.982A4 4 0 0110 14a4 4 0 01-4-4 3.999 3.999 0 01.018-1.018A5.98 5.98 0 0010 16a5.98 5.98 0 005-2.982A5.979 5.979 0 0012.982 14.982z" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Live Password Validation Rules -->
+                <div id="password-rules" class="mt-2 text-sm space-y-1 text-gray-300">
+                    <div id="length-rule" class="validation-item flex items-center invalid">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <span>Minimum 8 characters</span>
+                    </div>
+                    <div id="uppercase-rule" class="validation-item flex items-center invalid">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <span>At least one uppercase letter</span>
+                    </div>
+                    <div id="lowercase-rule" class="validation-item flex items-center invalid">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <span>At least one lowercase letter</span>
+                    </div>
+                    <div id="digit-rule" class="validation-item flex items-center invalid">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <span>At least one digit</span>
+                    </div>
+                    <div id="special-rule" class="validation-item flex items-center invalid">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <span>At least one special character (!@#$%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div>
+                <label for="confirm-password" class="text-sm font-medium text-gray-200 block mb-2">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent focus:outline-none shadow-inner bg-white/10 text-white placeholder-gray-400" required placeholder="••••••••" aria-describedby="confirm-password-error">
+                <p id="confirm-password-error" class="text-yellow-300 text-xs mt-1 validation-message"></p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-gradient-to-b from-red-700 to-red-900 text-white py-2 px-4 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 focus:ring-offset-gray-900 disabled:bg-red-900/50 disabled:from-red-900/50 disabled:to-red-950/50 disabled:cursor-not-allowed disabled:transform-none disabled:border-none shadow-lg hover:shadow-xl transition-shadow duration-200 border-t border-t-red-500/80 border-b-2 border-b-red-950">
+                Sign Up
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element Selection ---
+            const form = document.getElementById('signup-form');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const togglePasswordButton = document.getElementById('toggle-password');
+            const eyeIcon = document.getElementById('eye-icon');
+            const eyeSlashIcon = document.getElementById('eye-slash-icon');
+            
+            // Error message elements
+            const emailError = document.getElementById('email-error');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            const formError = document.getElementById('form-error');
+            const formSuccess = document.getElementById('form-success');
+
+            // Password validation rule elements
+            const rules = {
+                length: document.getElementById('length-rule'),
+                uppercase: document.getElementById('uppercase-rule'),
+                lowercase: document.getElementById('lowercase-rule'),
+                digit: document.getElementById('digit-rule'),
+                special: document.getElementById('special-rule'),
+            };
+
+            const checkIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`;
+            const xIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
+
+
+            // --- Validation Logic ---
+            const validationPatterns = {
+                email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                length: /.{8,}/,
+                uppercase: /[A-Z]/,
+                lowercase: /[a-z]/,
+                digit: /[0-9]/,
+                special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+            };
+
+            const updateRuleUI = (element, isValid) => {
+                const iconContainer = element.querySelector('svg');
+                // No need to select textContainer as the color is inherited
+                if (isValid) {
+                    element.classList.remove('invalid');
+                    element.classList.add('valid');
+                    iconContainer.outerHTML = checkIconSVG;
+                } else {
+                    element.classList.remove('valid');
+                    element.classList.add('invalid');
+                    iconContainer.outerHTML = xIconSVG;
+                }
+            };
+            
+            const validatePassword = () => {
+                const password = passwordInput.value;
+                const results = {
+                    length: validationPatterns.length.test(password),
+                    uppercase: validationPatterns.uppercase.test(password),
+                    lowercase: validationPatterns.lowercase.test(password),
+                    digit: validationPatterns.digit.test(password),
+                    special: validationPatterns.special.test(password),
+                };
+
+                updateRuleUI(rules.length, results.length);
+                updateRuleUI(rules.uppercase, results.uppercase);
+                updateRuleUI(rules.lowercase, results.lowercase);
+                updateRuleUI(rules.digit, results.digit);
+                updateRuleUI(rules.special, results.special);
+                
+                // Return true if all rules pass
+                return Object.values(results).every(Boolean);
+            };
+
+            const validateConfirmPassword = () => {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                const isValid = password === confirmPassword && confirmPassword.length > 0;
+
+                if (confirmPassword.length === 0) {
+                     confirmPasswordError.textContent = '';
+                     confirmPasswordInput.classList.remove('border-yellow-300', 'border-green-300');
+                } else if (isValid) {
+                    confirmPasswordError.textContent = 'Passwords match!';
+                    confirmPasswordError.classList.remove('text-yellow-300');
+                    confirmPasswordError.classList.add('text-green-300');
+                    confirmPasswordInput.classList.remove('border-yellow-300');
+                    confirmPasswordInput.classList.add('border-green-300');
+                } else {
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                    confirmPasswordError.classList.remove('text-green-300');
+                    confirmPasswordError.classList.add('text-yellow-300');
+                    confirmPasswordInput.classList.remove('border-green-300');
+                    confirmPasswordInput.classList.add('border-yellow-300');
+                }
+                return isValid;
+            };
+
+            const validateEmail = () => {
+                const email = emailInput.value;
+                const isValid = validationPatterns.email.test(email);
+
+                if (email.length === 0) {
+                    emailError.textContent = '';
+                    emailInput.classList.remove('border-yellow-300', 'border-green-300');
+                } else if (isValid) {
+                    emailError.textContent = '';
+                    emailInput.classList.remove('border-yellow-300');
+                    emailInput.classList.add('border-green-300');
+                } else {
+                    emailError.textContent = 'Please enter a valid email address.';
+                    emailInput.classList.remove('border-green-300');
+                    emailInput.classList.add('border-yellow-300');
+                }
+                return isValid;
+            };
+
+            // --- Event Listeners ---
+            passwordInput.addEventListener('input', () => {
+                validatePassword();
+                // Also validate confirm password field if it has content
+                if (confirmPasswordInput.value.length > 0) {
+                    validateConfirmPassword();
+                }
+            });
+
+            emailInput.addEventListener('input', validateEmail);
+            confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+            
+            togglePasswordButton.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                confirmPasswordInput.type = isPassword ? 'text' : 'password';
+                
+                eyeIcon.classList.toggle('hidden', isPassword);
+                eyeSlashIcon.classList.toggle('hidden', !isPassword);
+
+                togglePasswordButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+            });
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                formError.textContent = '';
+                formSuccess.textContent = '';
+
+                // Run all validations on submit
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmPasswordValid = validateConfirmPassword();
+
+                if (isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                    formSuccess.textContent = 'Sign-up successful! Welcome.';
+                    // In a real application, you would now send the data to the server.
+                    // e.g., fetch('/api/signup', { method: 'POST', body: new FormData(form) });
+                    form.reset();
+                    // Reset styling
+                    emailInput.classList.remove('border-green-300', 'border-yellow-300');
+                    passwordInput.classList.remove('border-green-300', 'border-yellow-300');
+                    confirmPasswordInput.classList.remove('border-green-300', 'border-yellow-300');
+                    // Reset password rules UI
+                    Object.values(rules).forEach(rule => updateRuleUI(rule, false));
+
+                } else {
+                    formError.textContent = 'Please fix the errors before submitting.';
+                    // Focus on the first invalid field for better accessibility
+                    if (!isEmailValid) {
+                        emailInput.focus();
+                    } else if (!isPasswordValid) {
+                        passwordInput.focus();
+                    } else {
+                        confirmPasswordInput.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
