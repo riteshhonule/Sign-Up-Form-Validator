@@ -23,6 +23,15 @@ This project is a **secure, user-friendly, and visually appealing sign-up form**
 
 ---
 
+## Screenshots
+
+**Form UI Preview:**  
+![Form Preview](screenshots/form_preview.png)
+
+
+
+---
+
 ## Tech Stack
 
 - **HTML5:** For the structure and semantics of the form.  
